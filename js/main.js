@@ -1,7 +1,7 @@
 let money = 1000;
 let income = 'фриланс';
 let addExpenses = 'Аренда, такси, еда';
-let deposit = new Boolean(true);
+let deposit = true;
 let mission = 3000;
 let period = 3 ;
 
