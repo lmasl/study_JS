@@ -1,4 +1,4 @@
-<<<<<<< Updated upstream
+"use strict";
 
 let income = 200;
 let addEpenses = 1000;
@@ -9,29 +9,10 @@ let money = addEpenses - income - deposit;
 
 console.log ('Ваш остаток:' + money);
 
-alert('Hello world!')
-=======
-// let money = 1000;
 let income = 'фриланс';
-// let addExpenses = 'Аренда, такси, еда';
-// let deposit = true;
+
 let mission = 3000;
-// let period = 3 ;
 
-// console.log(typeof money);
-// console.log(typeof income);
-// console.log(typeof deposit);
-
-// console.log(addExpenses.length);
-
-// console.log('Период равен ' + period + ' месяца');
-// console.log('Цель заработать '+ mission + ' рублей');
-
-// let splitString = addExpenses.split(",");
-// console.log(splitString);
-
-// let budgetDay = money/30;
-// console.log('Ваш дневной бюджет составил:'+budgetDay);
 
 
 let money = parseInt( prompt('Ваш месячный доход?', 0) );
@@ -66,4 +47,4 @@ let budgetDay = budgetMonth / 30;
  if (budgetDay <= 0 ) {
     console.log('Что-то пошло не так...');
  } 
->>>>>>> Stashed changes
+
