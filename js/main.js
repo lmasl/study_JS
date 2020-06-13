@@ -22,14 +22,16 @@ let isNumber = function(n) {
   let period;
   
   
-  let start = function() {
-    money = prompt('Ваш месячный доход?');
-  
-    while (!isNumber(money)) {
-      money = prompt('Ваш месячный доход?');
-    }
+ 
+  let start = function () {
+    do {
+      money = +prompt('Ваш месячный доход?');
+    } while (!isNumber(money));
   };
+  
   start();
+  
+
   console.log('Ваш месячный доход: ' +money+ ' рублей');
   
   
