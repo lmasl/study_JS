@@ -76,6 +76,9 @@ let isNumber = function(n) {
   let getTargetMonth = function(){
     return mission / accumulatedMonth;
   };
+
+  getTargetMonth() > 0 ? console.log('Цель будет достигнута за : ', getTargetMonth() + ' месяцев') :
+  console.log('Цель не будет достигнута');
   
   
   let budgetDay = accumulatedMonth / 30;
