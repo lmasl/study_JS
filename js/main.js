@@ -1,3 +1,4 @@
+
 'use strict';
 
 let salaryAmount = document.querySelector('.salary-amount'),
@@ -27,11 +28,11 @@ let salaryAmount = document.querySelector('.salary-amount'),
     incomePeriodValue = document.querySelector('.income_period-value'),
     targetMonthValue = document.querySelector('.target_month-value');
 
-// только цифры
+//функция разрешающая ввод только цифр
 let onlyNumber = function (n) {
     n.value = n.value.replace(/[^0-9\b]/, '');
 };
-//только кириллица
+//функция разрешающая ввод только русских букв
 let onlyWord = function (n) {
     n.value = n.value.replace(/[^а-я\s\W\b]/, '');
 };
@@ -76,14 +77,14 @@ AppData.prototype.showResult = function () {
     targetMonthValue.value = this.getTargetMonth();
     incomePeriodValue.value = this.calcPeriod();
     periodSelect.addEventListener('input', function () {
-        incomePeriodValue.value = _this.calcPeriod;
+        incomePeriodValue.value = _this.calcPeriod();
     });
 };
 AppData.prototype.addExpensesBlock = function () {
     let cloneExpensesItem = expensesItems[0].cloneNode(true);
     cloneExpensesItem.querySelector('.expenses-title').value = '';
     cloneExpensesItem.querySelector('.expenses-amount').value = '';
-   
+    //ограничения
     onlyWord(cloneExpensesItem.querySelector('.expenses-title'));
     onlyNumber(cloneExpensesItem.querySelector('.expenses-amount'));
 
@@ -180,7 +181,7 @@ AppData.prototype.reset = function () {
         item.value = '';
     });
     periodSelect.value = 1;
-    periodAmount.textContent = periodSelect.value;
+    periodAmount.textContent = '1';
     document.querySelectorAll('.data input[type="text"]').forEach(function (item) {
         item.removeAttribute('readonly');
     });
@@ -212,45 +213,33 @@ AppData.prototype.reset = function () {
     buttonCancel.style.display = 'none';
     depositCheckbox.checked = false;
 };
-AppData.prototype.eventsListeners = function () {
-    buttonStart.disabled = true;
-    salaryAmount.addEventListener('input', function () { 
-        buttonStart.disabled = salaryAmount.value === '';
+AppData.prototype.eventListeners = function () {
+    salaryAmount.addEventListener('input', () => {
+      salaryAmount.value === '' ? start.disabled = true : start.disabled = false;
     });
-    periodSelect.addEventListener('input', function () { 
-        periodAmount.textContent = periodSelect.value;
+    start.addEventListener('click', appData.start.bind(appData));
+    expensesPlus.addEventListener('click', appData.addExpensesBlock);
+    incomePlus.addEventListener('click', appData.addIncomeBlock);
+    incomeTitle.addEventListener('input', () => {
+      incomeTitle.value = incomeTitle.value.replace(/[^а-я\s,.!?]/, '');
     });
-
-    let data = document.querySelector('.data');
-    let items = data.querySelectorAll('input[type="text"]');
-
-    const checkInput = (elem) => {
-        if (elem.placeholder === 'Наименование' || elem.placeholder === 'название') {
-            onlyWord(elem);
-        } else if (elem.placeholder === 'Сумма') {
-            onlyNumber(elem);
-        }
-    };
-    items.forEach(item => {
-        item.addEventListener('input', (e) => {
-            checkInput(e.target);
-        });
+    incomeAmount.addEventListener('input', () => {
+      incomeAmount.value = incomeAmount.value.replace(/[^0-9]/, '');
     });
-
-
-    buttonStart.addEventListener('click', this.start.bind(this)); 
-    buttonStart.addEventListener('click', () => { 
-        buttonStart.style.display = 'none';
-        buttonCancel.style.display = 'block';
-        document.querySelectorAll('.data input[type="text"]').forEach(function (item) {
-            item.setAttribute('readonly', true);
-        });
+    expensesTitle.addEventListener('input', () => {
+      expensesTitle.value = expensesTitle.value.replace(/[^а-я\s,.!?]/, '');
     });
-    buttonCancel.addEventListener('click', this.reset.bind(this)); 
-    buttonExpensesAdd.addEventListener('click', this.addExpensesBlock); 
-    buttonIncomeAdd.addEventListener('click', this.addIncomeBlock);
-};
+    expensesAmount.addEventListener('input', () => {
+      expensesAmount.value = expensesAmount.value.replace(/[^0-9]/, '');
+    });
+    additionalIncomeItems.forEach((item, index) => {
+      additionalIncomeItems[index].addEventListener('input', () => {
+        additionalIncomeItems[index].value = additionalIncomeItems[index].value.replace(/[^а-я\s,.!?]/, '');
+      });
+    });
+    cancel.addEventListener('click', appData.reset.bind(appData));
+  };
 
-const appData = new AppData();
-
-appData.eventsListeners();
+  const appData = new AppData();
+  
+  appData.eventListeners();
