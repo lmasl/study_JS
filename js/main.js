@@ -1,4 +1,3 @@
-
 'use strict';
 
 let salaryAmount = document.querySelector('.salary-amount'),
@@ -181,7 +180,7 @@ AppData.prototype.reset = function () {
         item.value = '';
     });
     periodSelect.value = 1;
-    periodAmount.textContent = '1';
+    periodAmount.textContent = periodSelect.value;
     document.querySelectorAll('.data input[type="text"]').forEach(function (item) {
         item.removeAttribute('readonly');
     });
@@ -213,33 +212,45 @@ AppData.prototype.reset = function () {
     buttonCancel.style.display = 'none';
     depositCheckbox.checked = false;
 };
-AppData.prototype.eventListeners = function () {
-    salaryAmount.addEventListener('input', () => {
-      salaryAmount.value === '' ? start.disabled = true : start.disabled = false;
+AppData.prototype.eventsListeners = function () {
+    buttonStart.disabled = true;
+    salaryAmount.addEventListener('input', function () { //выключение кнопки
+        buttonStart.disabled = salaryAmount.value === '';
     });
-    start.addEventListener('click', appData.start.bind(appData));
-    expensesPlus.addEventListener('click', appData.addExpensesBlock);
-    incomePlus.addEventListener('click', appData.addIncomeBlock);
-    incomeTitle.addEventListener('input', () => {
-      incomeTitle.value = incomeTitle.value.replace(/[^а-я\s,.!?]/, '');
+    periodSelect.addEventListener('input', function () { //динамическое изменение подписи у ползунка
+        periodAmount.textContent = periodSelect.value;
     });
-    incomeAmount.addEventListener('input', () => {
-      incomeAmount.value = incomeAmount.value.replace(/[^0-9]/, '');
-    });
-    expensesTitle.addEventListener('input', () => {
-      expensesTitle.value = expensesTitle.value.replace(/[^а-я\s,.!?]/, '');
-    });
-    expensesAmount.addEventListener('input', () => {
-      expensesAmount.value = expensesAmount.value.replace(/[^0-9]/, '');
-    });
-    additionalIncomeItems.forEach((item, index) => {
-      additionalIncomeItems[index].addEventListener('input', () => {
-        additionalIncomeItems[index].value = additionalIncomeItems[index].value.replace(/[^а-я\s,.!?]/, '');
-      });
-    });
-    cancel.addEventListener('click', appData.reset.bind(appData));
-  };
 
-  const appData = new AppData();
-  
-  appData.eventListeners();
+    let data = document.querySelector('.data');
+    let items = data.querySelectorAll('input[type="text"]');
+
+    const checkInput = (elem) => {
+        if (elem.placeholder === 'Наименование' || elem.placeholder === 'название') {
+            onlyWord(elem);
+        } else if (elem.placeholder === 'Сумма') {
+            onlyNumber(elem);
+        }
+    };
+    items.forEach(item => {
+        item.addEventListener('input', (e) => {
+            checkInput(e.target);
+        });
+    });
+
+
+    buttonStart.addEventListener('click', this.start.bind(this)); //начало программы по кнопке рассчитать
+    buttonStart.addEventListener('click', () => { //выключение input`ов
+        buttonStart.style.display = 'none';
+        buttonCancel.style.display = 'block';
+        document.querySelectorAll('.data input[type="text"]').forEach(function (item) {
+            item.setAttribute('readonly', true);
+        });
+    });
+    buttonCancel.addEventListener('click', this.reset.bind(this)); //кнопка сброса
+    buttonExpensesAdd.addEventListener('click', this.addExpensesBlock); //кнопка "плюс"
+    buttonIncomeAdd.addEventListener('click', this.addIncomeBlock);
+};
+
+const appData = new AppData();
+
+appData.eventsListeners();
