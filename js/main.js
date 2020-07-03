@@ -220,7 +220,7 @@ class AppData {
             }
         });
         depositPercent.addEventListener('input', (e) => {
-            if (depositPercent.value < 0 || depositPercent.value > 100) {
+            if (depositPercent.value < 1 || depositPercent.value > 100) {
                 buttonStart.disabled = true;
                 alert('Введите корректное значение в поле проценты');
             } else {
